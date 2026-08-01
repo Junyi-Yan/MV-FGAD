@@ -1,5 +1,5 @@
 # MV-FGAD
-[ICML26] MV-FGAD: Towards Efficient and Effective Federated Graph Anomaly Detection via Multi-view Learning
+[ICML'26] MV-FGAD: Towards Efficient and Effective Federated Graph Anomaly Detection via Multi-view Learning
 
 This repository is the official implementation of "[MV-FGAD: Towards Efficient and Effective Federated Graph Anomaly Detection via Multi-view Learning](https://openreview.net/pdf?id=yBcY0bY45t)", accepted by ICML'26.
 

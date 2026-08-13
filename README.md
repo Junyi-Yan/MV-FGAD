@@ -3,6 +3,12 @@
 
 This repository is the official implementation of "[MV-FGAD: Towards Efficient and Effective Federated Graph Anomaly Detection via Multi-view Learning](https://openreview.net/pdf?id=yBcY0bY45t)", accepted by ICML'26.
 
+![](https://github.com/Junyi-Yan/Junyi-Yan.github.io/blob/main/Picture/ICML2026.png)
+
+# Overview
+Our implementation for STIM is based on PyTorch. 
+
+
 # Cite
 If you compare with, build on, or use aspects of this work, please cite the following:
 

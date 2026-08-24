@@ -8,6 +8,21 @@ This repository is the official implementation of "[MV-FGAD: Towards Efficient a
 # Overview
 Our implementation for STIM is based on PyTorch. 
 
+# Datasets
+Datasets can be obtained from [google drive link](https://drive.google.com/drive/folders/1zvXVEArei1UPy78EXewDPNsyYBOvYIrw). 
+
+# Requirments
+This code requires the following:
+
+- Python==3.9
+- PyTorch==2.0.1+cu118
+- Pytorch Geometric==2.6.1
+- Numpy==1.23.0
+- Scipy==1.13.1
+- Scikit-learn==1.6.1
+- NetworkX==3.2.1
+- OGB==1.3.6
+- DGL==1.1.2+cu118 
 
 # Cite
 If you compare with, build on, or use aspects of this work, please cite the following:

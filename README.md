@@ -9,7 +9,7 @@ This repository is the official implementation of "[MV-FGAD: Towards Efficient a
 Our implementation for STIM is based on PyTorch. 
 
 # Datasets
-Datasets can be obtained from [google drive link](https://drive.google.com/drive/folders/1q-i6ANJ5YKsgLfL4L3MI18q1aO2rHCi-). For each dataset, create a separate subfolder under `datasets/` with the same name as the dataset, and place the corresponding `.mat` file inside it (e.g., `datasets/Amazon/Amazon.mat`).
+Datasets can be obtained from [google drive link](https://drive.google.com/drive/folders/1q-i6ANJ5YKsgLfL4L3MI18q1aO2rHCi-). For each dataset, please create a separate subfolder under `datasets/` with the same name as the dataset, and place the corresponding `.mat` file inside it (e.g., `datasets/Amazon/Amazon.mat`).
 
 # Requirments
 This code requires the following:

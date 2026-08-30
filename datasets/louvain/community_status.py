@@ -1,12 +1,5 @@
-# coding=utf-8
-
-
 class Status(object):
-    """
-    To handle several data in one struct.
 
-    Could be replaced by named tuple, but don't want to depend on python 2.6
-    """
     node2com = {}
     total_weight = 0
     internals = {}
@@ -27,7 +20,6 @@ class Status(object):
                 + " total_weight : " + str(self.total_weight))
 
     def copy(self):
-        """Perform a deep copy of status"""
         new_status = Status()
         new_status.node2com = self.node2com.copy()
         new_status.internals = self.internals.copy()
@@ -36,7 +28,6 @@ class Status(object):
         new_status.total_weight = self.total_weight
 
     def init(self, graph, weight, part=None):
-        """Initialize the status of a graph with every node in one community"""
         count = 0
         self.node2com = dict([])
         self.total_weight = 0

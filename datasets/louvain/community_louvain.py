@@ -261,84 +261,24 @@ def generate_dendrogram(graph,
                         resolution=1.,
                         randomize=None,
                         random_state=None):
-    """Find communities in the graph and return the associated dendrogram
 
-    A dendrogram is a tree and each level is a partition of the graph nodes.
-    Level 0 is the first partition, which contains the smallest communities,
-    and the best is len(dendrogram) - 1. The higher the level is, the bigger
-    are the communities
-
-
-    Parameters
-    ----------
-    graph : networkx.Graph
-        the networkx graph which will be decomposed
-    part_init : dict, optional
-        the algorithm will start using this partition of the nodes. It's a
-        dictionary where keys are their nodes and values the communities
-    weight : str, optional
-        the key in graph to use as weight. Default to 'weight'
-    resolution :  double, optional
-        Will change the size of the communities, default to 1.
-        represents the time described in
-        "Laplacian Dynamics and Multiscale Modular Structure in Networks",
-        R. Lambiotte, J.-C. Delvenne, M. Barahona
-
-    Returns
-    -------
-    dendrogram : list of dictionaries
-        a list of partitions, ie dictionnaries where keys of the i+1 are the
-        values of the i. and where keys of the first are the nodes of graph
-
-    Raises
-    ------
-    TypeError
-        If the graph is not a networkx.Graph
-
-    See Also
-    --------
-    best_partition
-
-    Notes
-    -----
-    Uses Louvain algorithm
-
-    References
-    ----------
-    .. 1. Blondel, V.D. et al. Fast unfolding of communities in large
-    networks. J. Stat. Mech 10008, 1-12(2008).
-
-    Examples
-    --------
-    >>> G=nx.erdos_renyi_graph(100, 0.01)
-    >>> dendo = generate_dendrogram(G)
-    >>> for level in range(len(dendo) - 1) :
-    >>>     print("partition at level", level,
-    >>>           "is", partition_at_level(dendo, level))
-    :param weight:
-    :type weight:
-    """
     if graph.is_directed():
         raise TypeError("Bad graph type, use only non directed graph")
 
-    # Properly handle random state, eventually remove old `randomize` parameter
-    # NOTE: when `randomize` is removed, delete code up to random_state = ...
+
     if randomize is not None:
         warnings.warn("The `randomize` parameter will be deprecated in future "
                       "versions. Use `random_state` instead.", DeprecationWarning)
-        # If shouldn't randomize, we set a fixed seed to get determinisitc results
+
         if randomize is False:
             random_state = 0
 
-    # We don't know what to do if both `randomize` and `random_state` are defined
     if randomize and random_state is not None:
         raise ValueError("`randomize` and `random_state` cannot be used at the "
                          "same time")
 
     random_state = check_random_state(random_state)
 
-    # special case, when there is no link
-    # the best partition is everyone in its community
     if graph.number_of_edges() == 0:
         part = dict([])
         for i, node in enumerate(graph.nodes()):
@@ -371,40 +311,7 @@ def generate_dendrogram(graph,
 
 
 def induced_graph(partition, graph, weight="weight"):
-    """Produce the graph where nodes are the communities
 
-    there is a link of weight w between communities if the sum of the weights
-    of the links between their elements is w
-
-    Parameters
-    ----------
-    partition : dict
-       a dictionary where keys are graph nodes and  values the part the node
-       belongs to
-    graph : networkx.Graph
-        the initial graph
-    weight : str, optional
-        the key in graph to use as weight. Default to 'weight'
-
-
-    Returns
-    -------
-    g : networkx.Graph
-       a networkx graph where nodes are the parts
-
-    Examples
-    --------
-    >>> n = 5
-    >>> g = nx.complete_graph(2*n)
-    >>> part = dict([])
-    >>> for node in g.nodes() :
-    >>>     part[node] = node % 2
-    >>> ind = induced_graph(part, g)
-    >>> goal = nx.Graph()
-    >>> goal.add_weighted_edges_from([(0,1,n*n),(0,0,n*(n-1)/2), (1, 1, n*(n-1)/2)])  # NOQA
-    >>> nx.is_isomorphic(ind, goal)
-    True
-    """
     ret = nx.Graph()
     ret.add_nodes_from(partition.values())
 
@@ -419,19 +326,15 @@ def induced_graph(partition, graph, weight="weight"):
 
 
 def __renumber(dictionary):
-    """Renumber the values of the dictionary from 0 to n
-    """
+
     values = set(dictionary.values())
     target = set(range(len(values)))
 
     if values == target:
-        # no renumbering necessary
         ret = dictionary.copy()
     else:
-        # add the values that won't be renumbered
         renumbering = dict(zip(target.intersection(values),
                                target.intersection(values)))
-        # add the values that will be renumbered
         renumbering.update(dict(zip(values.difference(target),
                                     target.difference(values))))
         ret = {k: renumbering[v] for k, v in dictionary.items()}
@@ -440,8 +343,7 @@ def __renumber(dictionary):
 
 
 def load_binary(data):
-    """Load binary graph as used by the cpp implementation of this algorithm
-    """
+
     with open(data, "rb") as data_file:
         reader = array.array("I")
         reader.fromfile(data_file, 1)
@@ -467,8 +369,7 @@ def load_binary(data):
 
 
 def __one_level(graph, status, weight_key, resolution, random_state):
-    """Compute one level of communities
-    """
+
     modified = True
     nb_pass_done = 0
     cur_mod = __modularity(status, resolution)
@@ -505,10 +406,7 @@ def __one_level(graph, status, weight_key, resolution, random_state):
 
 
 def __neighcom(node, graph, status, weight_key):
-    """
-    Compute the communities in the neighborhood of node in the graph given
-    with the decomposition node2com
-    """
+
     weights = {}
     for neighbor, datas in graph[node].items():
         if neighbor != node:
@@ -520,7 +418,7 @@ def __neighcom(node, graph, status, weight_key):
 
 
 def __remove(node, com, weight, status):
-    """ Remove node from community com and modify status"""
+
     status.degrees[com] = (status.degrees.get(com, 0.)
                            - status.gdegrees.get(node, 0.))
     status.internals[com] = float(status.internals.get(com, 0.) -
@@ -529,7 +427,7 @@ def __remove(node, com, weight, status):
 
 
 def __insert(node, com, weight, status):
-    """ Insert node into community and modify status"""
+
     status.node2com[node] = com
     status.degrees[com] = (status.degrees.get(com, 0.) +
                            status.gdegrees.get(node, 0.))
@@ -538,10 +436,7 @@ def __insert(node, com, weight, status):
 
 
 def __modularity(status, resolution):
-    """
-    Fast compute the modularity of the partition of the graph using
-    status precomputed
-    """
+
     links = float(status.total_weight)
     result = 0.
     for community in set(status.node2com.values()):
@@ -553,7 +448,7 @@ def __modularity(status, resolution):
 
 
 def __randomize(items, random_state):
-    """Returns a List containing a random permutation of items"""
+
     randomized_items = list(items)
     random_state.shuffle(randomized_items)
     return randomized_items

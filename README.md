@@ -22,7 +22,12 @@ This code requires the following:
 - Scikit-learn==1.6.1
 - NetworkX==3.2.1
 - OGB==1.3.6
-- DGL==1.1.2+cu118 
+- DGL==1.1.2+cu118
+
+# Usage
+```
+python main.py
+```
 
 # Cite
 If you compare with, build on, or use aspects of this work, please cite the following:
